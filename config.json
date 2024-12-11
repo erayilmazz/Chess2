@@ -106,6 +106,24 @@
             "count" : 4 
         },
         {
+            "type" : "queen",
+            "white_positions" : [
+                {"x" : 4, "y" : 0}    
+            ],
+            "black_positions" : [
+                {"x" : 4, "y" : 9} 
+            ],
+            "movement" : {
+                "forward" : 10,
+                "sideways" : 10,
+                "diagonal" : 10,
+                "l_shape" : false,
+                "first_move_forward" : 0,
+                "diagonal_capture" : 0
+            },
+            "count" : 2
+        },
+        {
             
         }
     ]
