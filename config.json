@@ -46,6 +46,26 @@
             "count" : 24
         },
         {
+            "type" : "rook",
+            "white_positions" : [
+                {"x" : 1, "y" : 0},
+                {"x" : 8, "y" : 0}    
+            ],
+            "black_positions" : [
+                {"x" : 1, "y" : 9},
+                {"x" : 8, "y" : 9} 
+            ],
+            "movement" : {
+                "forward" : 10,
+                "sideways" : 10,
+                "diagonal" : 0,
+                "l_shape" : false,
+                "first_move_forward" : 0,
+                "diagonal_capture" : 0
+            },
+            "count" : 4
+        };
+        {
             
         }
     ]
