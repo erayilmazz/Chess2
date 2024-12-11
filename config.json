@@ -141,6 +141,56 @@
             },
             "count" : 2
         }
+    ],
+    "portals" : [
+        {
+            "id" : "orange_1",
+            "positions":{
+                "entry" : {"x": 4, "y": 4},
+                "exit" : {"x": 5, "y": 5}
+            },
+            "properties": {
+                "preserve_direction" : true,
+                "allowed_colors" : ["white", "black"],
+                "cooldown" : 1
+            }
+        },
+        {
+            "id" : "orange_2",
+            "positions":{
+                "entry" : {"x": 5, "y": 5},
+                "exit" : {"x": 4, "y": 4}
+            },
+            "properties": {
+                "preserve_direction" : true,
+                "allowed_colors" : ["white", "black"],
+                "cooldown" : 1
+            }
+        },
+        {
+            "id" : "blue_1",
+            "positions":{
+                "entry" : {"x": 0, "y": 5},
+                "exit" : {"x": 9, "y": 4}
+            },
+            "properties": {
+                "preserve_direction" : true,
+                "allowed_colors" : ["white", "black"],
+                "cooldown" : 1
+            }
+        },
+        {
+            "id" : "blue_2",
+            "positions":{
+                "entry" : {"x": 9, "y": 4},
+                "exit" : {"x": 0, "y": 5}
+            },
+            "properties": {
+                "preserve_direction" : true,
+                "allowed_colors" : ["white", "black"],
+                "cooldown" : 1
+            }
+        }
     ]
 
 }
