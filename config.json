@@ -1,0 +1,13 @@
+{
+    "game_settings" : {
+        "name" : "Chees 2",
+        "board_size" : 10,
+        "turn_limit" : 100
+    },
+    "pieces" : [
+        {
+            "type" : 
+        }
+    ]
+
+}
