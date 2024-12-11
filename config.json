@@ -124,7 +124,22 @@
             "count" : 2
         },
         {
-            
+            "type" : "king",
+            "white_positions" : [
+                {"x" : 5, "y" : 0}    
+            ],
+            "black_positions" : [
+                {"x" : 5, "y" : 9} 
+            ],
+            "movement" : {
+                "forward" : 1,
+                "sideways" : 1,
+                "diagonal" : 1,
+                "l_shape" : false,
+                "first_move_forward" : 0,
+                "diagonal_capture" : 0
+            },
+            "count" : 2
         }
     ]
 
