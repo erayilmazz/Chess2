@@ -86,6 +86,26 @@
             "count" : 4 
         },
         {
+            "type" : "bishop",
+            "white_positions" : [
+                {"x" : 3, "y" : 0},
+                {"x" : 6, "y" : 0}    
+            ],
+            "black_positions" : [
+                {"x" : 3, "y" : 9},
+                {"x" : 6, "y" : 9} 
+            ],
+            "movement" : {
+                "forward" : 0,
+                "sideways" : 0,
+                "diagonal" : 10,
+                "l_shape" : false,
+                "first_move_forward" : 0,
+                "diagonal_capture" : 0
+            },
+            "count" : 4 
+        },
+        {
             
         }
     ]
