@@ -35,12 +35,15 @@ std::vector<std::pair<int,int>> ChessBoard::possibleMoves(int x, int y){
     return moves;
 }
 
+int ChessBoard::getSize() const {return boardSize;}
+
+
 ChessPiece* ChessBoard::getPiece(int x, int y) const{
 
 }
 
 Portal* ChessBoard::getPortal(int x, int y) const{
-    
+
 }
 
 bool ChessBoard::isValidMove(int beforex, int beforey, int afterx, int aftery) const{
