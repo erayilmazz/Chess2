@@ -15,7 +15,7 @@ public:
     Position getPosition() const;
     std::string getColor() const;
 
-    void setPosition(const Position& position);
+    void setPosition(const Position& newPosition);
     void setType(const std::string& newType);
 
 private:
