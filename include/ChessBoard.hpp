@@ -12,13 +12,15 @@ public:
     void createBoard(const std::vector<PieceConfig>& piece, const std::vector<PortalConfig>& portal);
     void printBoard() const;
     void movePiece(int beforex, int beforey, int afterx, int aftery);
-    void possibleMoves(int x, int y);
+    std::vector<std::pair<int,int>> possibleMoves(int x, int y);
+
+    ChessPiece* getPiece(int x, int y) const;
+    Portal* getPortal(int x, int y) const;
 
 private:
     int boardSize;
     std::unordered_map <std::string, ChessPiece*> board;
     std::unordered_map <std:: string, Portal> portals;
 
-    std::string getInfo(int x, int y) const;
-    bool isValidMove(int x, int y) const;
+    bool isValidMove(int beforex, int beforey, int afterx, int aftery) const;
 }
