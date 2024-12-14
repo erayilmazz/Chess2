@@ -118,7 +118,7 @@ std::vector<Position> MoveValidator::calculatePossibleMoves(const ChessPiece& pi
 
 bool MoveValidator::isValidMove(const ChessPiece& piece, Position& cor) const{
     if(piece.cooldown || afterx >= board.getSize() || aftery >= board.getSize() || afterx < 0 || aftery < 0) return false;
-    if(board.getPiece(cor) != nullptr){
+    if(board.getPiece(cor) != nullptr && board.getPortal(cor) != nullptr){
         //highlight et burda
         return true;
     }
