@@ -1,9 +1,11 @@
 #include <unordered_map>
+#include "ChessPiece.hpp"
+#include "ChessBoard.hpp"
 
 
 class MoveValidator{
 public:
-    MoveValidator(const Board& board);
+    MoveValidator();
 
     bool isValidMove(const ChessPiece& piece, int beforex, int beforey, int afterx, int aftery) const;
     std::vector<std::pair<int,int>> getValidMoves(const ChessPiece& piece, int beforex, int aftery) const;

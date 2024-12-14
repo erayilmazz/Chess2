@@ -2,7 +2,7 @@
 #include <unordered_map>
 #include <string>
 #include "ChessPiece.hpp"
-#include "Portal.hpp"
+//#include "Portal.hpp"
 #include "ConfigReader.hpp"
 
 

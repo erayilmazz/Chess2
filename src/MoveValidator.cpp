@@ -1,7 +1,6 @@
 #include "MoveValidator.hpp"
 
-MoveValidator::MoveValidator(const Board& board)
-    :board(board){}
+MoveValidator::MoveValidator(){}
 
 
 std::vector<Position> MoveValidator::calculatePossibleMoves(const ChessPiece& piece){
@@ -31,42 +30,66 @@ std::vector<Position> MoveValidator::calculatePossibleMoves(const ChessPiece& pi
         for(int i = 0; i < movement.sideways; ++i){
             Position tempPos = currPos;
             tempPos.x +=1;
-            if(isValidMove(piece, tempPos))
+            if(isValidMove(piece, tempPos)){
+                cordinates.push_back(tempPos);
+            }else{
+                break;
+            }
         }
         for(int i = 0; i < movement.sideways; ++i){
-            Position tempPos = piece.getPosition();
+            Position tempPos = currPos;
             tempPos.x -=1;
-            if(isValidMove(piece, tempPos)) 
+            if(isValidMove(piece, tempPos)){
+                cordinates.push_back(tempPos);
+            }else{
+                break;
+            }
         }
     }
     if(movement.diagonal != 0){
        for(int i = 0; i < movement.diagonal; ++ i){
-            Position tempPos = piece.getPosition();
+            Position tempPos = currPos;
             tempPos.x +=1;
             tempPos.y +=1;
-            if(!isValidMove(piece, tempPos)) break;
+            if(isValidMove(piece, tempPos)){
+                cordinates.push_back(tempPos);
+            }else{
+                break;
+            }
         }
         for(int i = 0; i < movement.diagonal; ++ i){
-            Position tempPos = piece.getPosition();
+            Position tempPos = currPos;
             tempPos.x +=1;
             tempPos.y -=1;
-            if(!isValidMove(piece, tempPos)) break;
+            if(isValidMove(piece, tempPos)){
+                cordinates.push_back(tempPos);
+            }else{
+                break;
+            }
         }
         for(int i = 0; i < movement.diagonal; ++ i){
-            Position tempPos = piece.getPosition();
+            Position tempPos = currPos;
             tempPos.x -=1;
             tempPos.y +=1;
-            if(!isValidMove(piece, tempPos)) break;
+            if(isValidMove(piece, tempPos)){
+                cordinates.push_back(tempPos);
+            }else{
+                break;
+            }
         } 
         for(int i = 0; i < movement.diagonal; ++ i){
-            Position tempPos = piece.getPosition();
+            Position tempPos = currPos;
             tempPos.x -=1;
             tempPos.y -=1;
-            if(!isValidMove(piece, tempPos)) break;
+            if(isValidMove(piece, tempPos)){
+                cordinates.push_back(tempPos);
+            }else{
+                break;
+            }
         }  
     }
     if(movement.l_shape){
-        Position tempPos = piece.getPosition();
+        Position tempPos = currPos;
         std::vector<Position> lMoves{
             {tempPos.x += 2, tempPos.y +=1},
             {tempPos.x += 2, tempPos.y -=1},
