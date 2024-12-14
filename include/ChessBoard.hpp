@@ -13,6 +13,7 @@ public:
     void printBoard() const;
     void movePiece(int beforex, int beforey, int afterx, int aftery);
     std::vector<std::pair<int,int>> possibleMoves(int x, int y);
+    int getSize() const;
 
     ChessPiece* getPiece(int x, int y) const;
     Portal* getPortal(int x, int y) const;
