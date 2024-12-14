@@ -17,10 +17,65 @@ std::vector<Position> MoveValidator::calculatePossibleMoves(const ChessPiece& pi
         tempPos.y -= 1;
         if(isValidMove(piece, tempPos))
     }
-    
-
-
-
+    if(movement.sideways != 1){
+        for(int i = 0; i < movement.sideways; ++i){
+            Position tempPos = piece.getPosition();
+            tempPos.x +=1;
+            if(isValidMove(piece, tempPos)) 
+        }
+        for(int i = 0; i < movement.sideways; ++i){
+            Position tempPos = piece.getPosition();
+            tempPos.x -=1;
+            if(isValidMove(piece, tempPos)) 
+        }
+    }
+    if(movement.diagonal != 0){
+       for(int i = 0; i < movement.diagonal; ++ i){
+            Position tempPos = piece.getPosition();
+            tempPos.x +=1;
+            tempPos.y +=1;
+            if(isValidMove(piece, tempPos))
+        }
+        for(int i = 0; i < movement.diagonal; ++ i){
+            Position tempPos = piece.getPosition();
+            tempPos.x +=1;
+            tempPos.y -=1;
+            if(isValidMove(piece, tempPos))
+        }
+        for(int i = 0; i < movement.diagonal; ++ i){
+            Position tempPos = piece.getPosition();
+            tempPos.x -=1;
+            tempPos.y +=1;
+            if(isValidMove(piece, tempPos))
+        } 
+        for(int i = 0; i < movement.diagonal; ++ i){
+            Position tempPos = piece.getPosition();
+            tempPos.x -=1;
+            tempPos.y -=1;
+            if(isValidMove(piece, tempPos))
+        }  
+    }
+    if(movement.l_shape){
+        Position tempPos = piece.getPosition();
+        std::vector<Position> lMoves{
+            {tempPos.x += 2, tempPos.y +=1},
+            {tempPos.x += 2, tempPos.y -=1},
+            {tempPos.x -= 2, tempPos.y +=1},
+            {tempPos.x -= 2, tempPos.y -=1},
+            {tempPos.x += 1, tempPos.y +=2},
+            {tempPos.x += 1, tempPos.y -=2},
+            {tempPos.x -= 1, tempPos.y +=2},
+            {tempPos.x -= 1, tempPos.y -=2},
+            {tempPos.x += 4, tempPos.y +=2},
+            {tempPos.x += 4, tempPos.y -=2},
+            {tempPos.x -= 4, tempPos.y +=2},
+            {tempPos.x -= 4, tempPos.y -=2},
+            {tempPos.x += 2, tempPos.y +=4},
+            {tempPos.x += 2, tempPos.y -=4},
+            {tempPos.x -= 2, tempPos.y +=4},
+            {tempPos.x -= 2, tempPos.y -=4}
+        }
+    }
 
 
 }
