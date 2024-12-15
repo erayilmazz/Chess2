@@ -1,4 +1,4 @@
-#include "../obj/ChessBoard.hpp"
+#include "../include/ChessBoard.hpp"
 
 ChessBoard::ChessBoard(int size) : boardSize(size){
     //create board

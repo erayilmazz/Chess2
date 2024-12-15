@@ -1,6 +1,7 @@
 
 class GameManager{
 public:
+    GameManager();
     void startGame();
     bool isValidPiece(); //ekranda seçilen piece input olsun
     bool isValidMove();
@@ -9,4 +10,4 @@ public:
 private:
     bool isWhiteTurn;
     void switchPlayer();
-}
+};

@@ -4,27 +4,36 @@ MoveValidator::MoveValidator(){}
 
 
 std::vector<Position> MoveValidator::calculatePossibleMoves(const ChessPiece& piece){
-    std::vector <Position> cordinates;
+    std::vector <std::vector <Position>> cordinates;
     if(piece.cooldown != 0) return cordinates; //empty vector
     MovementRules movement = piece.getRules();
     Position currPos = piece.getPosition();
+    std::vector<Position> path;
     for(int i = 0; i < movement.forward; ++i){
         Position tempPos = currPos;
         tempPos.y += 1;
         if(isValidMove(piece, tempPos)){
-            cordinates.push_back(tempPos);
+            path.push_back(tempPos);
         }else{
             break;
         }
+    }
+    if(!path.empty()){
+        cordinates.push_back(path);
+        path.clear();
     }
     for(int i = 0; i < movement.backward; ++i){
         Position tempPos = currPos;
         tempPos.y -= 1;
         if(isValidMove(piece, tempPos)){
-            cordinates.push_back(tempPos);
+            path.push_back(tempPos);
         }else{
             break;
         }
+    }
+    if(!path.empty()){
+        cordinates.push_back(path);
+        path.clear();
     }
     if(movement.sideways != 1){
         for(int i = 0; i < movement.sideways; ++i){
