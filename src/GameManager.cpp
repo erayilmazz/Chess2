@@ -31,8 +31,9 @@ void GameManager::makeMove(){
 }
 
 bool GameManager::isGameOver(){
-    //mevcut turndeki bütün taşları karşı takımın şahına ispossiblemove yaptırt
-    //
+    //1. koşul: mevcut turndeki bütün taşları karşı takımın şahına ispossiblemove yaptırt
+    //2.koşul: rakip şahını hareket ettirdiğinde is possible move yaptırt bütün taşlara
+    //3.koşul: şah yaptırtan bütün yolları bulup o yollara herhangi taş gidebiliyor mu kontrol et
 }
 
 void GameManager::switchPlayer(){
