@@ -4,8 +4,15 @@ ChessBoard::ChessBoard(int size) : boardSize(size){
     //create board
 }
 
-void ChessBoard::createBoard(const std::vector<PieceConfig>& piece, const std::vector<PortalConfig>& portal){
-
+void ChessBoard::createBoard(const std::vector<PieceConfig>& pieceConfigs, const std::vector<PortalConfig>& portalConfigs){
+    for(const auto& piece : pieceConfigs){
+        for(const auto& position: piece.white_positions){
+            board[pos].first = new ChessPiece(piece.type, position, "white", piece.movement);
+        }
+        for(const auto& position: piece.black_positions){
+            board[pos].first = new ChessPiece(piece.type, position, "black", piece.movement);
+        }
+    }
 }
 
 void ChessBoard::printBoard() const{

@@ -2,8 +2,16 @@
 #include <iomanip>
 #include <iostream>
 
-#include "ConfigReader.hpp"
+#include "../include/ConfigReader.hpp"
 
+//taşları çek onları yarat ve board'a ekle
+ConfigReader configReader("config.json");
+ChessBoard board(GameSettings.board_size);
+board.createBoard(configReader.getPieceConfigs(), configReader.getPortalConfigs());
+board.printBoard();
+
+
+/*
 // Helper function to print positions
 void printPosition(const Position& pos) {
   std::cout << "(" << pos.x << "," << pos.y << ")";
@@ -102,3 +110,4 @@ int main(int argc, char* argv[]) {
 
   return 0;
 }
+*/
