@@ -11,6 +11,7 @@ board.createBoard(configReader.getPieceConfigs(), configReader.getPortalConfigs(
 board.printBoard();
 
 
+
 /*
 // Helper function to print positions
 void printPosition(const Position& pos) {
