@@ -3,37 +3,41 @@
 GameManager::GameManager(){}
 
 void GameManager::startGame(){
-    //boardı kur
-    //portalı ve taşları yerine koy chessboard fonksiyon
-    isWhiteTurn = true;
+    ConfigReader configReader("config.json");
+    board.createBoard(configReader.getPieceConfigs(), configReader.getPortalConfigs());
+    board.printBoard();
 }
 
-bool GameManager::isValidPiece(){
+bool GameManager::isValidPiece(Position& pos){
     //gelen input olacak
-    if((piece.getColor() == "white" && isWhiteTurn) || (piece.getColor() == "black" && !isWhiteTurn)){
+    ChessPiece* piece = getPiece(pos); 
+    if(piece == nullptr) return false;
+    if((piece->getColor() == "white" && isWhiteTurn) || (piece.getColor() == "black" && !isWhiteTurn)){
         return true;
     }
     return false;
 }
 
-bool GameManager::isValidMove(){
-    //gelen kordinat inputu
-    for(const auto& cor : cors){
-        if(cordinat == cor) return true;
-    }
-    return false;
+bool GameManager::isValidMove(Position& exPos, Position& newPos){
+    if(isValidMove(board.getPiece(exPos), newPos)){
+        makeMove();
+        return true;
+   }
+   return false;
 }
 
-void GameManager::makeMove(){
-    //input olarak kordinat ve taş gelecek
-    // if ile o kardinatta taş olup olmadığına bak
-    //varsa o taşı sil ve taşı hareket ettir
+void GameManager::makeMove(Position& exPos, Position& newPos){
+    if(board.getPiece(newPos) != nullptr) board.removePiece(newPos); //rakip taş varsa onu yok et
+    board.movePiece(exPos, newPos);
+    board.printBoard();
+    
 }
 
 bool GameManager::isGameOver(){
     //1. koşul: mevcut turndeki bütün taşları karşı takımın şahına ispossiblemove yaptırt
     //2.koşul: rakip şahını hareket ettirdiğinde is possible move yaptırt bütün taşlara
     //3.koşul: şah yaptırtan bütün yolları bulup o yollara herhangi taş gidebiliyor mu kontrol et
+    
 }
 
 void GameManager::switchPlayer(){
