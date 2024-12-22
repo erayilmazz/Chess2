@@ -36,40 +36,27 @@ void ChessBoard::printBoard() const{
     for(int i = 0; i < boardSize; i++) {std::cout << "-";}
 }
 
-void ChessBoard::movePiece(int beforex, int beforey, int afterx, int aftery){
-    auto moves = possibleMoves(beforex, beforey);
-    for(auto& move : moves){
-        if(move.first == afterx && move.second == aftery){
-            //change board
-            break;
-        }
-    }
+void ChessBoard::movePiece(Position& exPos, Position& newPos){
+    ChessPiece* piece = board[exPos].first;
+    board[newPos].first = piece;
+    board[exPos].first = nullptr;
+    piece->setType(newPos);
 }
 
-std::vector<std::pair<int,int>> ChessBoard::possibleMoves(int x, int y){
-    std::vector<std::pair<int,int>> moves;
-    for(int i = 0; i < boardSize; ++i){
-        for(int j = 0; j < boardSize; ++j){
-            if(isValidMove(x, y, i, j)){
-                //highlight there
-                moves.push_back(i,j);
-            }
-        }
-    }
-    return moves;
+void ChessBoard::removePiece(Position& pos){
+    ChessPiece* piece = board[pos].first;
+    board[pos].first = nullptr;
+    delete piece;
 }
 
 int ChessBoard::getSize() const {return boardSize;}
 
 
-ChessPiece* ChessBoard::getPiece(int x, int y) const{
-
+ChessPiece* ChessBoard::getPiece(Position& pos) const{
+    return board.at(pos).first;
 }
 
-Portal* ChessBoard::getPortal(int x, int y) const{
-
+Portal* ChessBoard::getPortal(Position& pos) const{
+    return board.at(pos).second;
 }
 
-bool ChessBoard::isValidMove(int beforex, int beforey, int afterx, int aftery) const{
-
-}
