@@ -34,10 +34,30 @@ void GameManager::makeMove(Position& exPos, Position& newPos){
 }
 
 bool GameManager::isGameOver(){
-    //1. koşul: mevcut turndeki bütün taşları karşı takımın şahına ispossiblemove yaptırt
-    //2.koşul: rakip şahını hareket ettirdiğinde is possible move yaptırt bütün taşlara
+    //1. koşul: mevcut turndeki bütün taşları karşı takımın şahına ispossiblemove yaptırt(+)
+    //2.koşul: rakip şahını hareket ettirdiğinde is possible move yaptırt bütün taşlara(+)
     //3.koşul: şah yaptırtan bütün yolları bulup o yollara herhangi taş gidebiliyor mu kontrol et
-    
+    if (isWhiteTurn == true){
+        enemyKingPos = board.getKingPos("black");
+        if(isKingInDanger(true, enemyKingPos) == true){
+            kingPosMove = board.calculatePossiblemoves();
+            for(const auto& pos: kingPosMove){
+                if(isKingInDanger(true, pos) == true)
+            }
+        }
+        return false;
+    }else{
+    }  
+}
+
+bool GameManager::isKingInDanger(bool isWhite, ChessPiece& enemyKingPos){
+    for(int row = 0; row < board.getSize(); ++row){
+            for(int col = 0; col < board.getSize(); ++col){
+                if(board.getPiece({row,col}).getColor() == "white"){
+                    if (isValidMove(board.getPiece({row, col}), enemyKingPos())) return true;
+                }
+            }
+        }
 }
 
 void GameManager::switchPlayer(){
