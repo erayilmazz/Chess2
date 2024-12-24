@@ -3,7 +3,7 @@
 MoveValidator::MoveValidator(){}
 
 
-std::vector<Position> MoveValidator::calculatePossibleMoves(const ChessPiece& piece){
+std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const ChessPiece& piece){
     std::vector <std::vector <Position>> cordinates;
     if(piece.cooldown != 0) return cordinates; //empty vector
     MovementRules movement = piece.getRules();

@@ -11,17 +11,14 @@ public:
     ChessBoard(int size);
     void createBoard(const std::vector<PieceConfig>& piece, const std::vector<PortalConfig>& portal);
     void printBoard() const;
-    void movePiece(int beforex, int beforey, int afterx, int aftery);
-    std::vector<std::pair<int,int>> possibleMoves(int x, int y);
+    void movePiece(Position& exPos, Position& newPos);
+    void removePiece(Position& pos);
     int getSize() const;
 
-    ChessPiece* getPiece(int x, int y) const;
-    Portal* getPortal(int x, int y) const;
+    ChessPiece* getPiece(Position& pos) const;
+    Portal* getPortal(Position& pos) const;
 
 private:
     int boardSize;
-    std::unordered_map <std::string, ChessPiece*> board;
-    std::unordered_map <std:: string, Portal> portals;
-
-    bool isValidMove(int beforex, int beforey, int afterx, int aftery) const;
+    std::unordered_map <Position, std::pair<Piece*, Portal*>>;
 }

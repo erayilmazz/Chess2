@@ -1,7 +1,7 @@
 #include "../include/ChessPiece.hpp"
 
-ChessPiece::ChessPiece(const std::string& type, const Position& position, const std::string& color)
-    :type(type), position(position), color(color) {}
+ChessPiece::ChessPiece(const std::string& type, const Position& position, const std::string& color, const MovementRules& rules)
+    :type(type), position(position), color(color), rules(rules) {}
 
 std::string ChessPiece::getType() const {return type;}
 Position ChessPiece::getPosition() const {return position;}

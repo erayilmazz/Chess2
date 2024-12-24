@@ -42,7 +42,14 @@ bool GameManager::isGameOver(){
         if(isKingInDanger(true, enemyKingPos) == true){
             kingPosMove = board.calculatePossiblemoves();
             for(const auto& pos: kingPosMove){
-                if(isKingInDanger(true, pos) == true)
+                if(isKingInDanger(true, pos) == false){
+                    return false;
+                }
+            }
+            for(const auto& pos : path){
+                if(isKingInDanger(false, pos) == false){
+                    return false;
+                }
             }
         }
         return false;
