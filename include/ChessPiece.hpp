@@ -2,11 +2,6 @@
 #include "ConfigReader.hpp"
 
 
-struct Position{
-    int x;
-    int y;
-};
-
 class ChessPiece{
 public:
     ChessPiece(const std::string& type, const Position& position, const std::string& color, const MovementRules& rules);

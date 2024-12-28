@@ -3,7 +3,7 @@
 #include <string>
 #include "ChessPiece.hpp"
 //#include "Portal.hpp"
-#include "ConfigReader.hpp"
+
 
 
 class ChessBoard{

@@ -2,13 +2,22 @@
 #include <iomanip>
 #include <iostream>
 
-#include "../include/ConfigReader.hpp"
+#include "../include/GameManager.hpp"
 
 //taşları çek onları yarat ve board'a ekle
-ConfigReader configReader("config.json");
-ChessBoard board(GameSettings.board_size);
-board.createBoard(configReader.getPieceConfigs(), configReader.getPortalConfigs());
-board.printBoard();
+GameManager gm();
+gm.startGame();
+while (true){
+  std::cout<< "Type coordinant of which piece you want to play" << std::endl;
+  std:: cin >> corx,cory;
+  gm.isValidPiece({corx, cory});
+  std::cout << "Type coordinant of where do you want to go" << std::endl;
+  std:: cin >> ncorx, ncory;
+  gm.isValidMove({corx, cory}, {ncorx, ncory});
+  gm.makeMove({corx, cory}, {ncorx, ncory});
+  if(gm.isGameOver()) break
+  gm.switchPlayer();
+}   
 
 
 

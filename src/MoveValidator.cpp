@@ -1,4 +1,4 @@
-#include "MoveValidator.hpp"
+#include "../include/MoveValidator.hpp"
 
 MoveValidator::MoveValidator(){}
 
@@ -164,7 +164,8 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
             {tempPos.x += 2, tempPos.y -=4},
             {tempPos.x -= 2, tempPos.y +=4},
             {tempPos.x -= 2, tempPos.y -=4}
-    };
+        }
+    }
     for(const auto& move : lMoves){
         if(isValidMove(piece, move)){
             path.push_back(move);

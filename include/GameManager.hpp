@@ -1,4 +1,5 @@
 #include "ChessBoard.hpp"
+#include "MoveValidator.hpp"
 
 
 class GameManager{
