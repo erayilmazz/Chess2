@@ -1,6 +1,8 @@
 #include "../include/GameManager.hpp"
+#include "../include/ChessBoard.hpp"
+#include "../include/MoveValidator.hpp"
 
-GameManager::GameManager(){}
+GameManager::GameManager(ChessBoard& board): board(board){}
 
 void GameManager::startGame(){
     ConfigReader configReader("config.json");
@@ -10,17 +12,18 @@ void GameManager::startGame(){
 
 bool GameManager::isValidPiece(Position& pos){
     //gelen input olacak
-    ChessPiece* piece = getPiece(pos); 
+    ChessPiece* piece = board.getPiece(pos); 
     if(piece == nullptr) return false;
-    if((piece->getColor() == "white" && isWhiteTurn) || (piece.getColor() == "black" && !isWhiteTurn)){
+    if((piece->getColor() == "white" && isWhiteTurn) || (piece->getColor() == "black" && !isWhiteTurn)){
         return true;
     }
     return false;
 }
 
 bool GameManager::isValidMove(Position& exPos, Position& newPos){
-    if(isValidMove(board.getPiece(exPos), newPos)){
-        makeMove();
+    ChessPiece* piece = board.getPiece(exPos);
+    if(mv.isValidMove(*piece, newPos)){
+        makeMove(exPos,newPos);
         return true;
    }
    return false;
@@ -37,15 +40,22 @@ bool GameManager::isGameOver(){
     //1. koşul: mevcut turndeki bütün taşları karşı takımın şahına ispossiblemove yaptırt(+)
     //2.koşul: rakip şahını hareket ettirdiğinde is possible move yaptırt bütün taşlara(+)
     //3.koşul: şah yaptırtan bütün yolları bulup o yollara herhangi taş gidebiliyor mu kontrol et
+    /*
     if (isWhiteTurn == true){
-        enemyKingPos = board.getKingPos("black");
+        Position enemyKingPos = board.getKingPos("black");
         if(isKingInDanger(true, enemyKingPos) == true){
-            kingPosMove = board.calculatePossiblemoves();
-            for(const auto& pos: kingPosMove){
-                if(isKingInDanger(true, pos) == false){
-                    return false;
+            ChessPiece* enemyKing = board.getPiece(enemyKingPos);
+            std::vector<std::vector<Position>> kingPosMove = mv.calculatePossibleMoves(*enemyKing);
+            for(const auto& position: kingPosMove){
+                for(const auto& pos : position){
+                    if(isKingInDanger(true, pos) == false){
+                        return false;
+                    }
                 }
             }
+            mv.getPath(enemyKingPos);
+            mv.calculatePossibleMoves();
+            
             for(const auto& pos : path){
                 if(isKingInDanger(false, pos) == false){
                     return false;
@@ -54,14 +64,18 @@ bool GameManager::isGameOver(){
         }
         return false;
     }else{
-    }  
+    }
+    */
+    return false;
 }
 
-bool GameManager::isKingInDanger(bool isWhite, ChessPiece& enemyKingPos){
+bool GameManager::isKingInDanger(bool isWhite, Position enemyKingPos){
     for(int row = 0; row < board.getSize(); ++row){
             for(int col = 0; col < board.getSize(); ++col){
-                if(board.getPiece({row,col}).getColor() == "white"){
-                    if (isValidMove(board.getPiece({row, col}), enemyKingPos())) return true;
+                Position pos = {row, col};
+                ChessPiece* piece = board.getPiece(pos);
+                if(piece->getColor() == "white"){
+                    if (isValidMove(pos, enemyKingPos)) return true;
                 }
             }
         }

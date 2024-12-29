@@ -1,23 +1,27 @@
 #pragma once
 
 #include <memory>
-#include "nlohmann/json.hpp"
+#include "../third_party/nlohmann/json.hpp"
 #include <string>
 #include <vector>
+#include "Position.hpp"
 
 /**
  * @brief Structure to hold position coordinates
  */
+/*
 struct Position {
   int x;
   int y;
 };
+*/
 
 /**
  * @brief Structure to hold movement rules for a piece
  */
 struct MovementRules {
   int forward{0};             // Number of squares forward
+  int backward{0};
   int sideways{0};            // Number of squares sideways
   int diagonal{0};            // Number of squares diagonally
   bool l_shape{false};        // Knight's L-shaped movement

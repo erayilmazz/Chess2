@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 #include "ConfigReader.hpp"
 
@@ -10,13 +11,16 @@ public:
     Position getPosition() const;
     std::string getColor() const;
     MovementRules getRules() const;
+    int getCooldown() const;
 
     void setPosition(const Position& newPosition);
     void setType(const std::string& newType);
+    void setCooldown(const int& newCooldown);
 
 private:
     std::string type;
     Position position;
     std::string color;
     MovementRules rules;
+    int cooldown = 0;
 };

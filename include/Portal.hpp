@@ -1,8 +1,5 @@
-struct Position{
-    int x;
-    int y;
-};
-
+#pragma once
+#include "Position.hpp"
 
 class Portal{
 public:
@@ -15,4 +12,4 @@ private:
     Position exit;
     std::string color;
     
-}
+};

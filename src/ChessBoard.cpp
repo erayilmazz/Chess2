@@ -10,26 +10,41 @@ ChessBoard::ChessBoard(int size) : boardSize(size){
 
 void ChessBoard::createBoard(const std::vector<PieceConfig>& pieceConfigs, const std::vector<PortalConfig>& portalConfigs){
     for(const auto& piece : pieceConfigs){
-        for(const auto& position: piece.white_positions){
-            board[pos].first = new ChessPiece(piece.type, position, "white", piece.movement);
+        for(const auto& pos: piece.white_positions){
+            board[pos].first = new ChessPiece(piece.type, pos, "white", piece.movement);
         }
-        for(const auto& position: piece.black_positions){
-            board[pos].first = new ChessPiece(piece.type, position, "black", piece.movement);
+        for(const auto& pos: piece.black_positions){
+            board[pos].first = new ChessPiece(piece.type, pos, "black", piece.movement);
         }
     }
+    /*
     for(const auto& portal : portalConfigs){
-        board[portal.pos].second = new ChessPortal();
+        board[portal.positions.entry].second = new Portal(portal.positions.entry, portal.positions.exit, portal.properties);
+    }
+    */           
+}
+
+Position ChessBoard::getKingPos(const std::string color){
+    for(int row = 0; row < boardSize; ++row){
+        for(int col = 0; col < boardSize; ++col){
+            Position pos = {row, col};
+            ChessPiece* piece = getPiece(pos);
+            if(piece != nullptr && piece->getType() == "king" && piece->getColor() == color){
+                Position kingPos = {row, col};
+                return kingPos;
+            }
+        }
     }
 }
 
 void ChessBoard::printBoard() const{
-    for(int row = 0; i < boardSize; ++row){
-        for(int i = 0; i < boardSize; i++) {std::cout << "-";}
-        for(int col = 0; j < boardSize; ++col){
-            std::endl;
+    for(int row = 0; row < boardSize; ++row){
+        for(int i = 0; i < boardSize; i++) {std::cout << "-------";}
+        for(int col = 0; col < boardSize; ++col){
+            std::cout << "\n";
             std::cout << "|";
-            std::cout << std::setw(10) << board[{row,col}].first;
-            std::cout << std::setw(10) << board[{row,col}].second;
+            std::cout << std::setw(10) << board.at({row,col}).first;
+            std::cout << std::setw(10) << board.at({row,col}).second;
         }
         std::cout << "|" << std::endl;
     }
@@ -40,7 +55,7 @@ void ChessBoard::movePiece(Position& exPos, Position& newPos){
     ChessPiece* piece = board[exPos].first;
     board[newPos].first = piece;
     board[exPos].first = nullptr;
-    piece->setType(newPos);
+    piece->setPosition(newPos);
 }
 
 void ChessBoard::removePiece(Position& pos){

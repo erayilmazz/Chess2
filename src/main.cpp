@@ -3,22 +3,30 @@
 #include <iostream>
 
 #include "../include/GameManager.hpp"
+#include "../include/ChessBoard.hpp"
 
 //taşları çek onları yarat ve board'a ekle
-GameManager gm();
-gm.startGame();
-while (true){
-  std::cout<< "Type coordinant of which piece you want to play" << std::endl;
-  std:: cin >> corx,cory;
-  gm.isValidPiece({corx, cory});
-  std::cout << "Type coordinant of where do you want to go" << std::endl;
-  std:: cin >> ncorx, ncory;
-  gm.isValidMove({corx, cory}, {ncorx, ncory});
-  gm.makeMove({corx, cory}, {ncorx, ncory});
-  if(gm.isGameOver()) break
-  gm.switchPlayer();
-}   
-
+int main(){
+  std::cout << "Hello World!";
+  ChessBoard board(10);
+  GameManager gm(board);
+  gm.startGame();
+  while (true){
+    std::cout<< "Type coordinant of which piece you want to play" << std::endl;
+    int corx, cory;
+    std:: cin >> corx,cory;
+    Position piecePos = {corx, cory};
+    gm.isValidPiece(piecePos);
+    std::cout << "Type coordinant of where do you want to go" << std::endl;
+    int ncorx, ncory;
+    std:: cin >> ncorx, ncory;
+    Position pos = {ncorx, ncory};
+    gm.isValidMove(piecePos, pos);
+    gm.makeMove(piecePos, pos);
+    if(gm.isGameOver()) break;
+    gm.switchPlayer();
+  }   
+}
 
 
 /*

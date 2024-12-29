@@ -1,9 +1,11 @@
+#pragma once
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <iostream>
 #include "ChessPiece.hpp"
-//#include "Portal.hpp"
-
+#include "Portal.hpp"
+#include "Position.hpp"
 
 
 class ChessBoard{
@@ -15,10 +17,11 @@ public:
     void removePiece(Position& pos);
     int getSize() const;
 
+    Position getKingPos(const std::string color);
     ChessPiece* getPiece(Position& pos) const;
     Portal* getPortal(Position& pos) const;
 
 private:
     int boardSize;
-    std::unordered_map <Position, std::pair<Piece*, Portal*>>;
-}
+    std::unordered_map <Position, std::pair<ChessPiece*, Portal*>> board;
+};

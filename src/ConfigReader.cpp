@@ -1,4 +1,4 @@
-#include "ConfigReader.hpp"
+#include "../include/ConfigReader.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -71,6 +71,7 @@ void ConfigReader::parsePieceConfigs(const nlohmann::json& json) {
     // Parse movement rules
     const auto& movement = piece["movement"];
     config.movement.forward = movement.value("forward", 0);
+    config.movement.backward = movement.value("backward", 0);
     config.movement.sideways = movement.value("sideways", 0);
     config.movement.diagonal = movement.value("diagonal", 0);
     config.movement.l_shape = movement.value("l_shape", false);
