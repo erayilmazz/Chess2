@@ -14,23 +14,17 @@ ChessBoard::ChessBoard(int size) : boardSize(size){
 void ChessBoard::createBoard(const std::vector<PieceConfig>& pieceConfigs, const std::vector<PortalConfig>& portalConfigs){
     for(const auto& piece : pieceConfigs){
         for(auto pos: piece.white_positions){
-            //int temp = pos.x;
-            //pos.x = 9 - pos.y;
-            //pos.y = temp;
             board[pos].first = new ChessPiece(piece.type, pos, "white", piece.movement);
         }
         for(auto pos: piece.black_positions){
-            //int temp = pos.x;
-            //pos.x = 9 - pos.y;
-            //pos.y = temp;
             board[pos].first = new ChessPiece(piece.type, pos, "black", piece.movement);
         }
     }
-    /*
+    
     for(const auto& portal : portalConfigs){
-        board[portal.positions.entry].second = new Portal(portal.positions.entry, portal.positions.exit, portal.properties);
+        board[portal.positions.entry].second = new Portal(portal.id, portal.positions.entry, portal.positions.exit, portal.properties);
     }
-    */           
+       
 }
 
 Position ChessBoard::getKingPos(const std::string color){
@@ -63,9 +57,11 @@ void ChessBoard::printBoard() const{
         for(int col = 0; col < boardSize; ++col){
             std::cout << "|";
             if(board.at({col,row}).first != nullptr)
-                std::cout << std::setw(2) << board.at({col,row}).first->getEmoji();
-            else std::cout << std::setw(1) << "";
-            std::cout << std::setw(5) << board.at({col,row}).second;
+                std::cout << "  " << board.at({col,row}).first->getEmoji();
+            else std::cout << "   ";
+            if(board.at({col,row}).second != nullptr)
+                std::cout << "  " << board.at({col,row}).second->getPortal();
+            else std::cout << "   ";
         }
         std::cout << "|" << std::endl;
     }
