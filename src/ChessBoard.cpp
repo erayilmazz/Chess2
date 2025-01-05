@@ -1,8 +1,11 @@
+#include "../third_party/nlohmann/json.hpp"
 #include "../include/ChessBoard.hpp"
+#include "../include/ConfigReader.hpp"
+
 
 ChessBoard::ChessBoard(int size) : boardSize(size){
     for(int i = 0; i < size; ++i){
-        for(int j = 0; i < size; ++j){
+        for(int j = 0; j < size; ++j){
             board[{i,j}] = {nullptr, nullptr};
         }
     }
@@ -25,7 +28,7 @@ void ChessBoard::createBoard(const std::vector<PieceConfig>& pieceConfigs, const
 }
 
 Position ChessBoard::getKingPos(const std::string color){
-    for(int row = 0; row < boardSize; ++row){
+    for(int row = boardSize; row > 0; --row){
         for(int col = 0; col < boardSize; ++col){
             Position pos = {row, col};
             ChessPiece* piece = getPiece(pos);
@@ -38,17 +41,30 @@ Position ChessBoard::getKingPos(const std::string color){
 }
 
 void ChessBoard::printBoard() const{
+    std::vector<char> letters = {'a','b','c','d','e','f','g','h','i','j'};
+    for(int i = 0; i < boardSize; i++) {
+            std::cout << "   ";
+            std::cout << letters[i];
+            std::cout << "   ";
+    }
+    std::cout << "\n";
     for(int row = 0; row < boardSize; ++row){
-        for(int i = 0; i < boardSize; i++) {std::cout << "-------";}
+        std::cout << row;
+        for(int i = 0; i < boardSize; i++) {
+            std::cout << "-------";
+        }
+        std::cout << "\n";
         for(int col = 0; col < boardSize; ++col){
-            std::cout << "\n";
             std::cout << "|";
-            std::cout << std::setw(10) << board.at({row,col}).first;
-            std::cout << std::setw(10) << board.at({row,col}).second;
+            if(board.at({row,col}).first != nullptr)
+                std::cout << std::setw(2) << board.at({row,col}).first->getEmoji();
+            else std::cout << std::setw(1) << "";
+            std::cout << std::setw(5) << board.at({row,col}).second;
         }
         std::cout << "|" << std::endl;
     }
-    for(int i = 0; i < boardSize; i++) {std::cout << "-";}
+    for(int i = 0; i < boardSize * 7; i++) {std::cout << "-";}
+    std::cout << "\n";
 }
 
 void ChessBoard::movePiece(Position& exPos, Position& newPos){
@@ -75,3 +91,4 @@ Portal* ChessBoard::getPortal(Position& pos) const{
     return board.at(pos).second;
 }
 
+	

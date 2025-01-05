@@ -5,7 +5,9 @@
 #include <iostream>
 #include "ChessPiece.hpp"
 #include "Portal.hpp"
-#include "Position.hpp"
+//#include "Position.hpp"
+#include "ConfigReader.hpp"
+
 
 
 class ChessBoard{

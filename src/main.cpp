@@ -1,34 +1,77 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <cctype>
+#include <string>
 
+
+#include "../third_party/nlohmann/json.hpp"
 #include "../include/GameManager.hpp"
 #include "../include/ChessBoard.hpp"
-
+bool isValidCor(std::string cor);
+Position convertToPosition(std::string cor);
 //taşları çek onları yarat ve board'a ekle
 int main(){
-  std::cout << "Hello World!";
   ChessBoard board(10);
   GameManager gm(board);
   gm.startGame();
   while (true){
-    std::cout<< "Type coordinant of which piece you want to play" << std::endl;
-    int corx, cory;
-    std:: cin >> corx,cory;
-    Position piecePos = {corx, cory};
-    gm.isValidPiece(piecePos);
-    std::cout << "Type coordinant of where do you want to go" << std::endl;
-    int ncorx, ncory;
-    std:: cin >> ncorx, ncory;
-    Position pos = {ncorx, ncory};
-    gm.isValidMove(piecePos, pos);
-    gm.makeMove(piecePos, pos);
+    Position piecePos;
+    while(true){
+      std::cout<< "Type coordinant of which piece you want to play" << std::endl;
+      std::string cor;
+      std:: cin >> cor;
+      if (isValidCor(cor)){
+        piecePos = convertToPosition(cor);
+      }else{
+        std::cout << "Invalid coordinant." << std::endl;
+        continue;
+      }
+      if (!gm.isValidPiece(piecePos)){
+        std::cout << "Invalid piece." << std:: endl;
+      }else break;
+    }
+    Position nPos;
+    while(true){
+      std::cout << "Type coordinant of where do you want to go" << std::endl;
+      std::string ncor;
+      std:: cin >> ncor;
+      if(isValidCor(ncor)){
+        nPos = convertToPosition(ncor);
+      }else{
+        std::cout << "Invalid coordinant." << std::endl;
+        continue;
+      }
+      if(!gm.isValidMove(piecePos, nPos)){
+        std::cout << "Invalid move." << std::endl;
+        continue;
+      }else break;
+    }
+    std::cout << "Looplar bitti." << std::endl;
+    gm.makeMove(piecePos, nPos);
+    board.printBoard();
     if(gm.isGameOver()) break;
     gm.switchPlayer();
   }   
 }
 
+bool isValidCor(std::string cor){
+  //burda şey gibi düşün a1 c0 d4 gibi bir cor değeri gelecek o değer geçerli mi diye bakacak
+  if(cor.length() != 2) return false;
+  if(!std::isalpha(cor[0]) || cor[0] < 'a' || cor[0] > 'j') return false;
+  if(!std::isdigit(cor[1]) || cor[1] < '0' || cor[1] > '9') return false;
+  return true;
+}
 
+Position convertToPosition(std::string cor){
+  std::vector<char> letters = {'a','b','c','d','e','f','g','h','i','j'};
+  size_t i = 0;
+  for(i = 0; cor[0] != letters[i]; ++i);
+  int x = i;
+  int y = cor[1] - '0';
+  Position pos = {x, y};
+  return pos;
+}
 /*
 // Helper function to print positions
 void printPosition(const Position& pos) {

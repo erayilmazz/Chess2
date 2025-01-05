@@ -54,7 +54,6 @@ distclean: clean
 run: $(EXECUTABLE)
 	@printf "$(GREEN)Running the project with chess_pieces.json...$(RESET)\n"
 	@./$(EXECUTABLE) data/chess_pieces.json
-
 run_fantasy: $(EXECUTABLE)
 	@printf "$(GREEN)Running the project with fantasy_chess.json...$(RESET)\n"
 	@./$(EXECUTABLE) data/fantasy_chess.json

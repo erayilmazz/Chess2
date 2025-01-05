@@ -43,80 +43,73 @@ void ConfigReader::parseGameSettings(const nlohmann::json& json) {
 }
 
 void ConfigReader::parsePieceConfigs(const nlohmann::json& json) {
-  piece_configs_.clear();
+    piece_configs_.clear();
 
-  for (const auto& piece : json) {
-    PieceConfig config;
-    config.type = piece["type"].get<std::string>();
+    for (const auto& piece : json) {
+        PieceConfig config;
+        config.type = piece.value("type", "");
 
-    // Parse positions for both colors
-    if (piece["positions"].contains("white")) {
-      for (const auto& pos : piece["positions"]["white"]) {
-        Position position;
-        position.x = pos["x"].get<int>();
-        position.y = pos["y"].get<int>();
-        config.white_positions.push_back(position);
-      }
+        if (piece.contains("white_positions")) {
+            for (const auto& pos : piece["white_positions"]) {
+                Position position;
+                position.x = pos.value("x", 0);
+                position.y = pos.value("y", 0);
+                config.white_positions.push_back(position);
+            }
+        }
+
+        if (piece.contains("black_positions")) {
+            for (const auto& pos : piece["black_positions"]) {
+                Position position;
+                position.x = pos.value("x", 0);
+                position.y = pos.value("y", 0);
+                config.black_positions.push_back(position);
+            }
+        }
+
+        if (piece.contains("movement")) {
+            const auto& movement = piece["movement"];
+            config.movement.forward = movement.value("forward", 0);
+            config.movement.backward = movement.value("backward", 0);
+            config.movement.sideways = movement.value("sideways", 0);
+            config.movement.diagonal = movement.value("diagonal", 0);
+            config.movement.l_shape = movement.value("l_shape", false);
+            config.movement.first_move_forward = movement.value("first_move_forward", 0);
+            config.movement.diagonal_capture = movement.value("diagonal_capture", 0);
+        }
+
+        config.count = piece.value("count", 0);
+        piece_configs_.push_back(config);
     }
-
-    if (piece["positions"].contains("black")) {
-      for (const auto& pos : piece["positions"]["black"]) {
-        Position position;
-        position.x = pos["x"].get<int>();
-        position.y = pos["y"].get<int>();
-        config.black_positions.push_back(position);
-      }
-    }
-
-    // Parse movement rules
-    const auto& movement = piece["movement"];
-    config.movement.forward = movement.value("forward", 0);
-    config.movement.backward = movement.value("backward", 0);
-    config.movement.sideways = movement.value("sideways", 0);
-    config.movement.diagonal = movement.value("diagonal", 0);
-    config.movement.l_shape = movement.value("l_shape", false);
-    config.movement.first_move_forward =
-        movement.value("first_move_forward", 0);
-    config.movement.diagonal_capture = movement.value("diagonal_capture", 0);
-
-    config.count = piece["count"].get<int>();
-    piece_configs_.push_back(config);
-  }
 }
 
 void ConfigReader::parsePortalConfigs(const nlohmann::json& json) {
-  portal_configs_.clear();
+    portal_configs_.clear();
 
-  for (const auto& portal : json) {
-    PortalConfig config;
+    for (const auto& portal : json) {
+        PortalConfig config;
+        config.id = portal.value("id", "");
 
-    // Parse portal ID
-    config.id = portal["id"].get<std::string>();
+        if (portal.contains("positions")) {
+            config.positions.entry.x = portal["positions"]["entry"].value("x", 0);
+            config.positions.entry.y = portal["positions"]["entry"].value("y", 0);
+            config.positions.exit.x = portal["positions"]["exit"].value("x", 0);
+            config.positions.exit.y = portal["positions"]["exit"].value("y", 0);
+        }
 
-    // Parse positions
-    config.positions.entry.x = portal["positions"]["entry"]["x"].get<int>();
-    config.positions.entry.y = portal["positions"]["entry"]["y"].get<int>();
-    config.positions.exit.x = portal["positions"]["exit"]["x"].get<int>();
-    config.positions.exit.y = portal["positions"]["exit"]["y"].get<int>();
+        if (portal.contains("properties")) {
+            const auto& props = portal["properties"];
+            config.properties.preserve_direction = props.value("preserve_direction", true);
+            config.properties.allowed_colors = props.value("allowed_colors", std::vector<std::string>());
+            config.properties.cooldown = props.value("cooldown", 0);
+        }
 
-    // Parse properties
-    const auto& props = portal["properties"];
-    config.properties.preserve_direction =
-        props.value("preserve_direction", true);
-    config.properties.allowed_colors =
-        props["allowed_colors"].get<std::vector<std::string>>();
-    config.properties.cooldown = props.value("cooldown", 0);
-
-    portal_configs_.push_back(config);
-  }
+        portal_configs_.push_back(config);
+    }
 }
 
 GameSettings ConfigReader::getGameSettings() const { return game_settings_; }
 
-std::vector<PieceConfig> ConfigReader::getPieceConfigs() const {
-  return piece_configs_;
-}
+std::vector<PieceConfig> ConfigReader::getPieceConfigs() const { return piece_configs_; }
 
-std::vector<PortalConfig> ConfigReader::getPortalConfigs() const {
-  return portal_configs_;
-}
+std::vector<PortalConfig> ConfigReader::getPortalConfigs() const { return portal_configs_; }

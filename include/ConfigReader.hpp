@@ -4,24 +4,33 @@
 #include "../third_party/nlohmann/json.hpp"
 #include <string>
 #include <vector>
-#include "Position.hpp"
+#include <functional>
 
 /**
  * @brief Structure to hold position coordinates
  */
-/*
 struct Position {
   int x;
   int y;
+  bool operator == (const Position& other) const{
+    return x == other.x && y == other.y;
+  }
 };
-*/
+namespace std{
+  template <>
+  struct hash <Position> {
+    size_t operator()(const Position& pos) const noexcept{
+      return std::hash<int>()(pos.x) ^ (std::hash<int> ()(pos.y) << 1);
+    }
+  };
+}
 
 /**
  * @brief Structure to hold movement rules for a piece
  */
 struct MovementRules {
-  int forward{0};             // Number of squares forward
-  int backward{0};
+  int forward{0};            // Number of squares forward
+  int backward{0};           // Number of squares backward
   int sideways{0};            // Number of squares sideways
   int diagonal{0};            // Number of squares diagonally
   bool l_shape{false};        // Knight's L-shaped movement

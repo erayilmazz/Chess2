@@ -12,6 +12,7 @@ public:
     std::string getColor() const;
     MovementRules getRules() const;
     int getCooldown() const;
+    std::string getEmoji() const;
 
     void setPosition(const Position& newPosition);
     void setType(const std::string& newType);

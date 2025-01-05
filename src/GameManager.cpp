@@ -1,11 +1,14 @@
+#include "../third_party/nlohmann/json.hpp"
 #include "../include/GameManager.hpp"
 #include "../include/ChessBoard.hpp"
 #include "../include/MoveValidator.hpp"
+#include "../include/ConfigReader.hpp"
 
 GameManager::GameManager(ChessBoard& board): board(board){}
 
 void GameManager::startGame(){
-    ConfigReader configReader("config.json");
+    ConfigReader configReader("data/chess_pieces.json");
+    configReader.readConfig();
     board.createBoard(configReader.getPieceConfigs(), configReader.getPortalConfigs());
     board.printBoard();
 }
