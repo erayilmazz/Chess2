@@ -4,7 +4,7 @@
 #include "../include/MoveValidator.hpp"
 #include "../include/ConfigReader.hpp"
 
-GameManager::GameManager(ChessBoard& board): board(board){}
+GameManager::GameManager(ChessBoard& board): board(board), isWhiteTurn(true){}
 
 void GameManager::startGame(){
     ConfigReader configReader("data/chess_pieces.json");

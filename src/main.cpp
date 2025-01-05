@@ -48,7 +48,6 @@ int main(){
       }else break;
     }
     std::cout << "Looplar bitti." << std::endl;
-    gm.makeMove(piecePos, nPos);
     board.printBoard();
     if(gm.isGameOver()) break;
     gm.switchPlayer();
@@ -65,7 +64,7 @@ bool isValidCor(std::string cor){
 
 Position convertToPosition(std::string cor){
   std::vector<char> letters = {'a','b','c','d','e','f','g','h','i','j'};
-  size_t i = 0;
+  int i = 0;
   for(i = 0; cor[0] != letters[i]; ++i);
   int x = i;
   int y = cor[1] - '0';

@@ -13,10 +13,16 @@ ChessBoard::ChessBoard(int size) : boardSize(size){
 
 void ChessBoard::createBoard(const std::vector<PieceConfig>& pieceConfigs, const std::vector<PortalConfig>& portalConfigs){
     for(const auto& piece : pieceConfigs){
-        for(const auto& pos: piece.white_positions){
+        for(auto pos: piece.white_positions){
+            //int temp = pos.x;
+            //pos.x = 9 - pos.y;
+            //pos.y = temp;
             board[pos].first = new ChessPiece(piece.type, pos, "white", piece.movement);
         }
-        for(const auto& pos: piece.black_positions){
+        for(auto pos: piece.black_positions){
+            //int temp = pos.x;
+            //pos.x = 9 - pos.y;
+            //pos.y = temp;
             board[pos].first = new ChessPiece(piece.type, pos, "black", piece.movement);
         }
     }
@@ -44,11 +50,11 @@ void ChessBoard::printBoard() const{
     std::vector<char> letters = {'a','b','c','d','e','f','g','h','i','j'};
     for(int i = 0; i < boardSize; i++) {
             std::cout << "   ";
-            std::cout << letters[i];
+            std::cout << letters[i];   
             std::cout << "   ";
     }
     std::cout << "\n";
-    for(int row = 0; row < boardSize; ++row){
+    for(int row = 9; row >= 0; --row){
         std::cout << row;
         for(int i = 0; i < boardSize; i++) {
             std::cout << "-------";
@@ -56,10 +62,10 @@ void ChessBoard::printBoard() const{
         std::cout << "\n";
         for(int col = 0; col < boardSize; ++col){
             std::cout << "|";
-            if(board.at({row,col}).first != nullptr)
-                std::cout << std::setw(2) << board.at({row,col}).first->getEmoji();
+            if(board.at({col,row}).first != nullptr)
+                std::cout << std::setw(2) << board.at({col,row}).first->getEmoji();
             else std::cout << std::setw(1) << "";
-            std::cout << std::setw(5) << board.at({row,col}).second;
+            std::cout << std::setw(5) << board.at({col,row}).second;
         }
         std::cout << "|" << std::endl;
     }
