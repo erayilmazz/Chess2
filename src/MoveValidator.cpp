@@ -1,8 +1,5 @@
 #include "../include/MoveValidator.hpp"
-MoveValidator::MoveValidator() : board(nullptr){}
 MoveValidator::MoveValidator(ChessBoard& board) : board(&board){}
-
-
 std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const ChessPiece& piece){
     std::vector <std::vector <Position>> cordinates;
     if(piece.getCooldown() != 0) return cordinates; //empty vector
@@ -84,7 +81,7 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
                 path.push_back(tempPos);
             }else{
                 if(isEnemyThere(piece, tempPos)){
-                path.push_back(tempPos);
+                    path.push_back(tempPos);
                 }
                 break;
             }
@@ -148,22 +145,22 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
     if(movement.l_shape){
         Position tempPos = currPos;
         std::vector<Position> lMoves{
-            {tempPos.x += 2, tempPos.y +=1},
-            {tempPos.x += 2, tempPos.y -=1},
-            {tempPos.x -= 2, tempPos.y +=1},
-            {tempPos.x -= 2, tempPos.y -=1},
-            {tempPos.x += 1, tempPos.y +=2},
-            {tempPos.x += 1, tempPos.y -=2},
-            {tempPos.x -= 1, tempPos.y +=2},
-            {tempPos.x -= 1, tempPos.y -=2},
-            {tempPos.x += 4, tempPos.y +=2},
-            {tempPos.x += 4, tempPos.y -=2},
-            {tempPos.x -= 4, tempPos.y +=2},
-            {tempPos.x -= 4, tempPos.y -=2},
-            {tempPos.x += 2, tempPos.y +=4},
-            {tempPos.x += 2, tempPos.y -=4},
-            {tempPos.x -= 2, tempPos.y +=4},
-            {tempPos.x -= 2, tempPos.y -=4}
+            {tempPos.x + 2, tempPos.y +1},
+            {tempPos.x + 2, tempPos.y -1},
+            {tempPos.x - 2, tempPos.y +1},
+            {tempPos.x - 2, tempPos.y -1},
+            {tempPos.x + 1, tempPos.y +2},
+            {tempPos.x + 1, tempPos.y -2},
+            {tempPos.x - 1, tempPos.y +2},
+            {tempPos.x - 1, tempPos.y -2},
+            {tempPos.x + 4, tempPos.y +2},
+            {tempPos.x + 4, tempPos.y -2},
+            {tempPos.x - 4, tempPos.y +2},
+            {tempPos.x - 4, tempPos.y -2},
+            {tempPos.x + 2, tempPos.y +4},
+            {tempPos.x + 2, tempPos.y -4},
+            {tempPos.x - 2, tempPos.y +4},
+            {tempPos.x - 2, tempPos.y -4}
         };
         for(auto& move : lMoves){
             if(isValidMove(piece, move)){
@@ -173,6 +170,7 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
             }
         }
     }
+    return cordinates;
 }
 
 std::vector<Position> MoveValidator::getPath(const Position pos, std::vector<std::vector<Position>>& positions) const{
@@ -188,7 +186,7 @@ std::vector<Position> MoveValidator::getPath(const Position pos, std::vector<std
 
 bool MoveValidator::isValidMove(const ChessPiece& piece, Position& cor) const{
     if(piece.getCooldown() != 0 || cor.x >= board->getSize() || cor.y >= board->getSize() || cor.x < 0 || cor.y < 0) return false;
-    if(board->getPiece(cor) != nullptr && board->getPortal(cor) != nullptr){
+    if(board->getPiece(cor) == nullptr && board->getPortal(cor) == nullptr){
         //highlight et burda
         return true;
     }
@@ -197,7 +195,7 @@ bool MoveValidator::isValidMove(const ChessPiece& piece, Position& cor) const{
 }
 
 bool MoveValidator::isEnemyThere(const ChessPiece& piece, Position& pos) const{
-    if(board->getPiece(pos)->getType() != piece.getType()){
+    if(board->getPiece(pos)->getType() == piece.getType()){
         //highlight et burda
         return true;
     }

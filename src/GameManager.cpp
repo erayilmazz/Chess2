@@ -4,7 +4,7 @@
 #include "../include/MoveValidator.hpp"
 #include "../include/ConfigReader.hpp"
 
-GameManager::GameManager(ChessBoard& board): board(board), isWhiteTurn(true){}
+GameManager::GameManager(ChessBoard& board): board(board), isWhiteTurn(true), mv(board){}
 
 void GameManager::startGame(){
     ConfigReader configReader("data/chess_pieces.json");
@@ -21,6 +21,17 @@ bool GameManager::isValidPiece(Position& pos){
         return true;
     }
     return false;
+}
+std::vector<Position> GameManager::getPossibleMoves(Position& pos){
+    ChessPiece* piece = board.getPiece(pos);
+    std::vector<std::vector<Position>> twoVec = mv.calculatePossibleMoves(*piece);
+    std::vector<Position> moves;
+    for(const auto& move : twoVec){
+        for(const auto& m : move){
+            moves.push_back(m);
+        }
+    }
+    return moves;
 }
 
 bool GameManager::isValidMove(Position& exPos, Position& newPos){

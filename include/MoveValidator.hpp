@@ -5,7 +5,6 @@
 
 class MoveValidator{
 public:
-    MoveValidator();
     MoveValidator(ChessBoard& board);
     std::vector<std::vector<Position>> calculatePossibleMoves(const ChessPiece& piece);
     std::vector<Position> getPath(const Position pos, std::vector<std::vector<Position>>& positions) const;

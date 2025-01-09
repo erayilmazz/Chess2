@@ -10,6 +10,7 @@
 #include "../include/ChessBoard.hpp"
 bool isValidCor(std::string cor);
 Position convertToPosition(std::string cor);
+std::string convertToBoard(Position& pos);
 //taşları çek onları yarat ve board'a ekle
 int main(){
   ChessBoard board(10);
@@ -18,7 +19,7 @@ int main(){
   while (true){
     Position piecePos;
     while(true){
-      std::cout<< "Type coordinant of which piece you want to play" << std::endl;
+      std::cout<< "Type coordinant of which piece you want to play: ";
       std::string cor;
       std:: cin >> cor;
       if (isValidCor(cor)){
@@ -29,11 +30,18 @@ int main(){
       }
       if (!gm.isValidPiece(piecePos)){
         std::cout << "Invalid piece." << std:: endl;
-      }else break;
+      }else{
+        
+        std::vector<Position> possibleMoves = gm.getPossibleMoves(piecePos);
+        for(auto& move : possibleMoves){
+          std::cout << convertToBoard(move) << std::endl;
+        }
+        break;
+      }
     }
     Position nPos;
     while(true){
-      std::cout << "Type coordinant of where do you want to go" << std::endl;
+      std::cout << "Type coordinant of where do you want to go: ";
       std::string ncor;
       std:: cin >> ncor;
       if(isValidCor(ncor)){
@@ -47,7 +55,7 @@ int main(){
         continue;
       }else break;
     }
-    std::cout << "Looplar bitti." << std::endl;
+    //std::cout << "Looplar bitti." << std::endl;
     board.printBoard();
     if(gm.isGameOver()) break;
     gm.switchPlayer();
@@ -70,6 +78,14 @@ Position convertToPosition(std::string cor){
   int y = cor[1] - '0';
   Position pos = {x, y};
   return pos;
+}
+
+std::string convertToBoard(Position& pos){
+  std::vector<char> letters = {'a','b','c','d','e','f','g','h','i','j'};
+  std::string cor;
+  cor += letters[pos.x];
+  cor += std::to_string(pos.y);
+  return cor;
 }
 /*
 // Helper function to print positions

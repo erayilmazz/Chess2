@@ -86,11 +86,17 @@ int ChessBoard::getSize() const {return boardSize;}
 
 
 ChessPiece* ChessBoard::getPiece(Position& pos) const{
-    return board.at(pos).first;
+    if(board.at(pos).first){
+        return board.at(pos).first;
+    }
+    return nullptr;
 }
 
 Portal* ChessBoard::getPortal(Position& pos) const{
-    return board.at(pos).second;
+    if(board.at(pos).second){
+        return board.at(pos).second;
+    }
+    return nullptr;
 }
 
 	

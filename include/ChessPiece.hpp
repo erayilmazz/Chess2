@@ -23,5 +23,5 @@ private:
     Position position;
     std::string color;
     MovementRules rules;
-    int cooldown = 0;
+    int cooldown;
 };

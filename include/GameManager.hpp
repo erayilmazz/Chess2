@@ -8,6 +8,7 @@ public:
     GameManager(ChessBoard& board);
     void startGame();
     bool isValidPiece(Position& pos);
+    std::vector<Position> getPossibleMoves(Position& pos);
     bool isValidMove(Position& exPos, Position& newPos);
     void makeMove(Position& exPos, Position& newPos);
     bool isGameOver();
