@@ -18,6 +18,7 @@ int main(){
   gm.startGame();
   while (true){
     Position piecePos;
+    std::vector<Position> possibleMoves;
     while(true){
       std::cout<< "Type coordinant of which piece you want to play: ";
       std::string cor;
@@ -30,12 +31,17 @@ int main(){
       }
       if (!gm.isValidPiece(piecePos)){
         std::cout << "Invalid piece." << std:: endl;
-      }else{
-        
-        std::vector<Position> possibleMoves = gm.getPossibleMoves(piecePos);
-        for(auto& move : possibleMoves){
-          std::cout << convertToBoard(move) << std::endl;
+      }else{ 
+        possibleMoves = gm.getPossibleMoves(piecePos);
+        if(possibleMoves.empty()){
+          std::cout << "Piece can't move." << std::endl;
+          continue;
         }
+        std::cout << "Possible Moves: ";
+        for(auto& move : possibleMoves){
+          std::cout << convertToBoard(move) << ", ";
+        }
+        std::cout << "\n";
         break;
       }
     }
@@ -50,12 +56,13 @@ int main(){
         std::cout << "Invalid coordinant." << std::endl;
         continue;
       }
-      if(!gm.isValidMove(piecePos, nPos)){
+      if(std::find(possibleMoves.begin(), possibleMoves.end(), nPos) == possibleMoves.end()){
         std::cout << "Invalid move." << std::endl;
         continue;
       }else break;
     }
     //std::cout << "Looplar bitti." << std::endl;
+    gm.makeMove(piecePos,nPos);
     board.printBoard();
     if(gm.isGameOver()) break;
     gm.switchPlayer();
