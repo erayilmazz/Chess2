@@ -4,7 +4,7 @@
 #include "../include/MoveValidator.hpp"
 #include "../include/ConfigReader.hpp"
 
-GameManager::GameManager(ChessBoard& board): board(board), isWhiteTurn(true), mv(board){}
+GameManager::GameManager(ChessBoard& board): board(board), turn("white"), mv(board){}
 
 void GameManager::startGame(){
     ConfigReader configReader("data/chess_pieces.json");
@@ -17,7 +17,7 @@ bool GameManager::isValidPiece(Position& pos){
     //gelen input olacak
     ChessPiece* piece = board.getPiece(pos); 
     if(piece == nullptr) return false;
-    if((piece->getColor() == "white" && isWhiteTurn) || (piece->getColor() == "black" && !isWhiteTurn)){
+    if(piece->getColor()  == turn){
         return true;
     }
     return false;
@@ -45,57 +45,60 @@ bool GameManager::isValidMove(Position& exPos, Position& newPos){
 
 void GameManager::makeMove(Position& exPos, Position& newPos){
     if(board.getPiece(newPos) != nullptr) board.removePiece(newPos); //rakip taş varsa onu yok et
-    board.movePiece(exPos, newPos);
-    board.printBoard();
-    
+    board.movePiece(exPos, newPos);    
 }
 
 bool GameManager::isGameOver(){
     //1. koşul: mevcut turndeki bütün taşları karşı takımın şahına ispossiblemove yaptırt(+)
     //2.koşul: rakip şahını hareket ettirdiğinde is possible move yaptırt bütün taşlara(+)
     //3.koşul: şah yaptırtan bütün yolları bulup o yollara herhangi taş gidebiliyor mu kontrol et
-    /*
-    if (isWhiteTurn == true){
+    Position enemyKingPos;
+    if (turn == "white"){
         Position enemyKingPos = board.getKingPos("black");
-        if(isKingInDanger(true, enemyKingPos) == true){
-            ChessPiece* enemyKing = board.getPiece(enemyKingPos);
-            std::vector<std::vector<Position>> kingPosMove = mv.calculatePossibleMoves(*enemyKing);
-            for(const auto& position: kingPosMove){
-                for(const auto& pos : position){
-                    if(isKingInDanger(true, pos) == false){
-                        return false;
-                    }
-                }
-            }
-            mv.getPath(enemyKingPos);
-            mv.calculatePossibleMoves();
-            
-            for(const auto& pos : path){
-                if(isKingInDanger(false, pos) == false){
+    }else{
+        Position enemyKingPos = board.getKingPos("white");
+    }
+    if(isKingInDanger(turn, enemyKingPos)) return true;
+    /*
+    if(isKingInDanger(turn, enemyKingPos) == true){
+        ChessPiece* enemyKing = board.getPiece(enemyKingPos);
+        std::vector<std::vector<Position>> kingPosMove = mv.calculatePossibleMoves(*enemyKing);
+        for(const auto& position: kingPosMove){
+            for(const auto& pos : position){
+                if(isKingInDanger(turn, pos) == false){
                     return false;
                 }
             }
         }
-        return false;
-    }else{
-    }
+        return true;
     */
-    return false;
+    return false;  
 }
 
-bool GameManager::isKingInDanger(bool isWhite, Position enemyKingPos){
+bool GameManager::isKingInDanger(std::string turn, Position enemyKingPos){
     for(int row = 0; row < board.getSize(); ++row){
             for(int col = 0; col < board.getSize(); ++col){
                 Position pos = {row, col};
                 ChessPiece* piece = board.getPiece(pos);
-                if(piece->getColor() == "white"){
-                    if (isValidMove(pos, enemyKingPos)) return true;
+                if(piece == nullptr) continue;
+                if(piece->getColor() == turn){
+                    std::vector<std::vector<Position>> kingPosMove = mv.calculatePossibleMoves(*piece);
+                    for(const auto& position: kingPosMove){
+                        for(const auto& pos : position){
+                            if(pos == enemyKingPos) return true;
+                        }
+                    }
                 }
             }
-        }
+    }
+    return false;
 }
 
 void GameManager::switchPlayer(){
-    if(isWhiteTurn) isWhiteTurn = false;
-    else isWhiteTurn = true;
+    if(turn == "white"){
+        turn = "black";
+    }
+    else if(turn == "black"){
+        turn = "white";
+    }
 }

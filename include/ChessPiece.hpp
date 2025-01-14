@@ -13,10 +13,12 @@ public:
     MovementRules getRules() const;
     int getCooldown() const;
     std::string getEmoji() const;
+    bool getMoveBefore() const;
 
     void setPosition(const Position& newPosition);
     void setType(const std::string& newType);
     void setCooldown(const int& newCooldown);
+    void setMoveBefore();
 
 private:
     std::string type;
@@ -24,4 +26,5 @@ private:
     std::string color;
     MovementRules rules;
     int cooldown;
+    bool moveBefore;
 };

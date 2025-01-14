@@ -10,6 +10,7 @@ public:
     std::vector<Position> getPath(const Position pos, std::vector<std::vector<Position>>& positions) const;
     bool isValidMove(const ChessPiece& piece, Position& cor) const;
     bool isEnemyThere(const ChessPiece& piece, Position& pos) const;
+    bool isPortalThere(Position& pos) const;
 private:
     ChessBoard* board;
 };

@@ -16,8 +16,17 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
         tempPos.y += 1;
         if(isValidMove(piece, tempPos)){
             path.push_back(tempPos);
+            if(movement.first_move_forward > 0 && piece.getMoveBefore() == 0){
+                tempPos = currPos;
+                tempPos.y += movement.first_move_forward;
+                if(isValidMove(piece, tempPos) || isPortalThere(tempPos)){
+                    path.push_back(tempPos);
+                    cordinates.push_back(path);
+                    path.clear();
+                }
+            }
         }else{
-            if(isEnemyThere(piece, tempPos)){
+            if((isEnemyThere(piece, tempPos) && piece.getType() != "pawn")  || isPortalThere(tempPos)){
                 path.push_back(tempPos);
             }
             break;
@@ -32,8 +41,17 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
         tempPos.y -= 1;
         if(isValidMove(piece, tempPos)){
             path.push_back(tempPos);
+            if(movement.first_move_forward > 0 && piece.getMoveBefore() == 0){
+                tempPos = currPos;
+                tempPos.y -= movement.first_move_forward;
+                if(isValidMove(piece, tempPos) || isPortalThere(tempPos)){
+                    path.push_back(tempPos);
+                    cordinates.push_back(path);
+                    path.clear();
+                }
+            }
         }else{
-            if(isEnemyThere(piece, tempPos)){
+            if((isEnemyThere(piece, tempPos) && piece.getType() != "pawn") || isPortalThere(tempPos)){
                 path.push_back(tempPos);
             }
             break;
@@ -50,7 +68,7 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
             if(isValidMove(piece, tempPos)){
                 path.push_back(tempPos);
             }else{
-                if(isEnemyThere(piece, tempPos)){
+                if((isEnemyThere(piece, tempPos) && piece.getType() != "pawn") || isPortalThere(tempPos)){
                     path.push_back(tempPos);
                 }
                 break;
@@ -66,7 +84,7 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
             if(isValidMove(piece, tempPos)){
                 path.push_back(tempPos);
             }else{
-                if(isEnemyThere(piece, tempPos)){
+                if((isEnemyThere(piece, tempPos) && piece.getType() != "pawn") || isPortalThere(tempPos)){
                     path.push_back(tempPos);
                 }
                 break;
@@ -85,7 +103,7 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
             if(isValidMove(piece, tempPos)){
                 path.push_back(tempPos);
             }else{
-                if(isEnemyThere(piece, tempPos)){
+                if(isEnemyThere(piece, tempPos) || isPortalThere(tempPos)){
                     path.push_back(tempPos);
                 }
                 break;
@@ -102,7 +120,7 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
             if(isValidMove(piece, tempPos)){
                 path.push_back(tempPos);
             }else{
-                if(isEnemyThere(piece, tempPos)){
+                if(isEnemyThere(piece, tempPos) || isPortalThere(tempPos)){
                 path.push_back(tempPos);
                 }
                 break;
@@ -119,7 +137,7 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
             if(isValidMove(piece, tempPos)){
                 path.push_back(tempPos);
             }else{
-                if(isEnemyThere(piece, tempPos)){
+                if(isEnemyThere(piece, tempPos) || isPortalThere(tempPos)){
                 path.push_back(tempPos);
                 }
                 break;
@@ -129,6 +147,7 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
             cordinates.push_back(path);
             path.clear();
         } 
+
         tempPos = currPos;
         for(int i = 0; i < movement.diagonal; ++ i){
             tempPos.x -=1;
@@ -136,7 +155,7 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
             if(isValidMove(piece, tempPos)){
                 path.push_back(tempPos);
             }else{
-                if(isEnemyThere(piece, tempPos)){
+                if(isEnemyThere(piece, tempPos) || isPortalThere(tempPos)){
                 path.push_back(tempPos);
                 }
                 break;
@@ -168,8 +187,41 @@ std::vector<std::vector<Position>> MoveValidator::calculatePossibleMoves(const C
             {tempPos.x - 2, tempPos.y -4}
         };
         for(auto& move : lMoves){
-            if(isValidMove(piece, move)){
+            if(isValidMove(piece, move) || isPortalThere(move)){ // AT YİYEMİYOR
                 path.push_back(move);
+                cordinates.push_back(path);
+                path.clear();
+            }   
+        }
+    }
+    if(movement.diagonal_capture){
+        tempPos = currPos;
+        std::vector<Position> dMoves;
+        if(piece.getColor() == "white"){
+            tempPos.x += 1, tempPos.y += 1;
+            if(isEnemyThere(piece, tempPos)){
+                path.push_back(tempPos);
+                cordinates.push_back(path);
+                path.clear();
+            }
+            tempPos = currPos;
+            tempPos.x -= 1, tempPos.y += 1;
+            if(isEnemyThere(piece, tempPos)){
+                path.push_back(tempPos);
+                cordinates.push_back(path);
+                path.clear();
+            }
+        }else{
+            tempPos.x += 1, tempPos.y -= 1;
+            if(isEnemyThere(piece, tempPos)){
+                path.push_back(tempPos);
+                cordinates.push_back(path);
+                path.clear();
+            }
+            tempPos = currPos;
+            tempPos.x -= 1, tempPos.y -= 1;
+            if(isEnemyThere(piece, tempPos)){
+                path.push_back(tempPos);
                 cordinates.push_back(path);
                 path.clear();
             }
@@ -200,8 +252,17 @@ bool MoveValidator::isValidMove(const ChessPiece& piece, Position& cor) const{
 
 bool MoveValidator::isEnemyThere(const ChessPiece& piece, Position& pos) const{
     if(pos.x >= board->getSize() || pos.y >= board->getSize() || pos.x < 0 || pos.y < 0) return false;
+    if(board->getPiece(pos) == nullptr) return false;
     if(board->getPiece(pos)->getColor() != piece.getColor()){
         //highlight et burda
+        return true;
+    }
+    return false;
+}
+
+bool MoveValidator::isPortalThere(Position& pos) const{
+    if(pos.x >= board->getSize() || pos.y >= board->getSize() || pos.x < 0 || pos.y < 0) return false;
+    if(board->getPortal(pos) != nullptr){
         return true;
     }
     return false;

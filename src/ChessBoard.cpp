@@ -22,15 +22,17 @@ void ChessBoard::createBoard(const std::vector<PieceConfig>& pieceConfigs, const
     }
     
     for(const auto& portal : portalConfigs){
-        board[portal.positions.entry].second = new Portal(portal.id, portal.positions.entry, portal.positions.exit, portal.properties);
+        Position pos = portal.positions.entry;
+        board[pos].second = new Portal(portal.id, portal.positions.entry, portal.positions.exit, portal.properties);
     }
        
 }
 
 Position ChessBoard::getKingPos(const std::string color){
-    for(int row = boardSize; row > 0; --row){
+    for(int row = 0; row < boardSize; ++row){
         for(int col = 0; col < boardSize; ++col){
             Position pos = {row, col};
+            if(getPiece(pos) == nullptr) continue;
             ChessPiece* piece = getPiece(pos);
             if(piece != nullptr && piece->getType() == "king" && piece->getColor() == color){
                 Position kingPos = {row, col};
@@ -69,11 +71,54 @@ void ChessBoard::printBoard() const{
     std::cout << "\n";
 }
 
+void ChessBoard::setCooldowns(const std::string& color){
+    for(int i = 0; i < getSize(); ++i){
+        for(int j = 0; j < getSize(); ++j){
+            Position pos = {i, j};
+            ChessPiece* piece =getPiece(pos);
+            if(piece != nullptr && piece->getColor() == color){
+                piece->setCooldown(0);
+            }
+        }
+    }
+}
+
+
+
 void ChessBoard::movePiece(Position& exPos, Position& newPos){
     ChessPiece* piece = board[exPos].first;
+    piece->setMoveBefore();
     board[newPos].first = piece;
     board[exPos].first = nullptr;
     piece->setPosition(newPos);
+    setCooldowns(piece->getColor());
+    if(getPortal(newPos) != nullptr){
+        Portal* portal = getPortal(newPos);
+        Position portalNewPos = portal->getExit();
+        if(getPiece(portalNewPos) != nullptr) removePiece(portalNewPos);
+        board[portalNewPos].first = piece;
+        board[newPos].first = nullptr;
+        piece->setPosition(portalNewPos);
+        piece->setCooldown(1);
+    }
+    pawnPromotion(*piece);
+}
+void ChessBoard::pawnPromotion(ChessPiece& piece){
+    if(piece.getType() == "pawn"){
+        Position pos = piece.getPosition();
+        if((piece.getColor() == "white" && pos.y == 9) || (piece.getColor() == "black" && pos.y == 0)){
+            std::string type;
+            while(1){
+                std::cout << "Which type would you like to promote your piece to? (rook/knight/bishop/queen)" << std::endl;
+                std::cin >> type;
+                if(type == "rook"  || type == "knight"  || type == "bishop"  || type == "queen"){
+                    piece.setType(type);
+                    break;
+                }
+                std::cout << "Choose valid type." << std::endl;
+            }
+        }
+    }
 }
 
 void ChessBoard::removePiece(Position& pos){
@@ -93,8 +138,9 @@ ChessPiece* ChessBoard::getPiece(Position& pos) const{
 }
 
 Portal* ChessBoard::getPortal(Position& pos) const{
-    if(board.at(pos).second){
-        return board.at(pos).second;
+    Portal* portal = board.at(pos).second;
+    if(portal){
+        return portal;
     }
     return nullptr;
 }

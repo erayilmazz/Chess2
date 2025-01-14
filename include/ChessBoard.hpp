@@ -15,7 +15,9 @@ public:
     ChessBoard(int size);
     void createBoard(const std::vector<PieceConfig>& piece, const std::vector<PortalConfig>& portal);
     void printBoard() const;
+    void setCooldowns(const std::string& color);
     void movePiece(Position& exPos, Position& newPos);
+    void pawnPromotion(ChessPiece& piece);
     void removePiece(Position& pos);
     int getSize() const;
 

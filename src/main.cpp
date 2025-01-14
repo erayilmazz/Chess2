@@ -64,7 +64,10 @@ int main(){
     //std::cout << "Looplar bitti." << std::endl;
     gm.makeMove(piecePos,nPos);
     board.printBoard();
-    if(gm.isGameOver()) break;
+    if(gm.isGameOver()){
+      std::cout << "Game Over!" << std::endl;
+      break;
+    }
     gm.switchPlayer();
   }   
 }

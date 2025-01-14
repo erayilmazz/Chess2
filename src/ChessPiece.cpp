@@ -1,7 +1,7 @@
 #include "../include/ChessPiece.hpp"
 #include <iomanip>
 ChessPiece::ChessPiece(const std::string& type, const Position& position, const std::string& color, const MovementRules& rules)
-    :type(type), position(position), color(color), rules(rules), cooldown(0) {}
+    :type(type), position(position), color(color), rules(rules), cooldown(0), moveBefore(false) {}
 
 std::string ChessPiece::getType() const {return type;}
 Position ChessPiece::getPosition() const {return position;}
@@ -37,7 +37,9 @@ std::string ChessPiece::getEmoji() const{
     } 
     return "";
 }
+bool ChessPiece::getMoveBefore() const {return moveBefore;}
 
 void ChessPiece::setPosition(const Position& newPosition) {position = newPosition;}
 void ChessPiece::setType(const std::string& newType) {type = newType;}
 void ChessPiece::setCooldown(const int& newCooldown) {cooldown = newCooldown;}
+void ChessPiece::setMoveBefore() {moveBefore = true;}

@@ -12,10 +12,10 @@ public:
     bool isValidMove(Position& exPos, Position& newPos);
     void makeMove(Position& exPos, Position& newPos);
     bool isGameOver();
-    bool isKingInDanger(bool isWhite, Position enemyKingPos);
+    bool isKingInDanger(std::string turn, Position enemyKingPos);
     void switchPlayer();
 private:
     ChessBoard& board;
-    bool isWhiteTurn;
+    std::string turn;
     MoveValidator mv;
 };
