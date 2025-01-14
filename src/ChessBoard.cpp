@@ -103,6 +103,48 @@ void ChessBoard::movePiece(Position& exPos, Position& newPos){
     }
     pawnPromotion(*piece);
 }
+
+void ChessBoard::makeShortCastling(std::string color){
+    Position king, castle;
+    if(color == "white"){
+        king = {5,0};
+        castle = {8,0};
+    }else{
+        king = {5,9};
+        castle = {8,9};
+    }
+    ChessPiece* pieceKing = board[king].first;
+    ChessPiece* pieceCastle = board[castle].first;
+    board[king].first = pieceCastle;
+    board[castle].first = pieceKing;
+    pieceKing->setPosition(castle);
+    pieceCastle->setPosition(king);
+    pieceKing->setMoveBefore();
+    pieceCastle->setMoveBefore();
+    setCooldowns(pieceKing->getColor());
+}
+
+void ChessBoard::makeLongCastling(std::string color){
+    Position king, castle;
+    if(color == "white"){
+        king = {5,0};
+        castle = {1,0};
+    }else{
+        king = {5,9};
+        castle = {1,9};
+    }
+    ChessPiece* pieceKing = board[king].first;
+    ChessPiece* pieceCastle = board[castle].first;
+    board[king].first = pieceCastle;
+    board[castle].first = pieceKing;
+    pieceKing->setPosition(castle);
+    pieceCastle->setPosition(king);
+    pieceKing->setMoveBefore();
+    pieceCastle->setMoveBefore();
+    setCooldowns(pieceKing->getColor());
+}
+
+
 void ChessBoard::pawnPromotion(ChessPiece& piece){
     if(piece.getType() == "pawn"){
         Position pos = piece.getPosition();

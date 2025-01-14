@@ -11,6 +11,8 @@ public:
     bool isValidMove(const ChessPiece& piece, Position& cor) const;
     bool isEnemyThere(const ChessPiece& piece, Position& pos) const;
     bool isPortalThere(Position& pos) const;
+    bool shortCastling(const std::string color) const;
+    bool longCastling(const std::string color) const;
 private:
     ChessBoard* board;
 };

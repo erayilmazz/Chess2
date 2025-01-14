@@ -54,13 +54,11 @@ bool GameManager::isGameOver(){
     //3.koşul: şah yaptırtan bütün yolları bulup o yollara herhangi taş gidebiliyor mu kontrol et
     Position enemyKingPos;
     if (turn == "white"){
-        Position enemyKingPos = board.getKingPos("black");
+        enemyKingPos = board.getKingPos("black");
     }else{
-        Position enemyKingPos = board.getKingPos("white");
+        enemyKingPos = board.getKingPos("white");
     }
-    if(isKingInDanger(turn, enemyKingPos)) return true;
-    /*
-    if(isKingInDanger(turn, enemyKingPos) == true){
+    if(isKingInDanger(turn, enemyKingPos)){
         ChessPiece* enemyKing = board.getPiece(enemyKingPos);
         std::vector<std::vector<Position>> kingPosMove = mv.calculatePossibleMoves(*enemyKing);
         for(const auto& position: kingPosMove){
@@ -71,8 +69,8 @@ bool GameManager::isGameOver(){
             }
         }
         return true;
-    */
-    return false;  
+    }
+    return false;    
 }
 
 bool GameManager::isKingInDanger(std::string turn, Position enemyKingPos){
@@ -93,6 +91,22 @@ bool GameManager::isKingInDanger(std::string turn, Position enemyKingPos){
     }
     return false;
 }
+
+bool GameManager::isShortCastling(){
+    if(mv.shortCastling(turn)) return true;
+    return false;
+}
+
+void GameManager::makeShortCastling(){ board.makeShortCastling(turn);}
+
+bool GameManager::isLongCastling(){
+    if(mv.longCastling(turn)) return true;
+    return false;
+}
+
+void GameManager::makeLongCastling(){ board.makeLongCastling(turn);}
+
+
 
 void GameManager::switchPlayer(){
     if(turn == "white"){

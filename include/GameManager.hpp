@@ -13,6 +13,10 @@ public:
     void makeMove(Position& exPos, Position& newPos);
     bool isGameOver();
     bool isKingInDanger(std::string turn, Position enemyKingPos);
+    bool isShortCastling();
+    void makeShortCastling();
+    bool isLongCastling();
+    void makeLongCastling();
     void switchPlayer();
 private:
     ChessBoard& board;

@@ -33,7 +33,7 @@ int main(){
         std::cout << "Invalid piece." << std:: endl;
       }else{ 
         possibleMoves = gm.getPossibleMoves(piecePos);
-        if(possibleMoves.empty()){
+        if(possibleMoves.empty() && !gm.isShortCastling()){
           std::cout << "Piece can't move." << std::endl;
           continue;
         }
@@ -41,15 +41,19 @@ int main(){
         for(auto& move : possibleMoves){
           std::cout << convertToBoard(move) << ", ";
         }
+        if(gm.isShortCastling()) std::cout << "sc";
+        if(gm.isLongCastling()) std::cout << "lc";
         std::cout << "\n";
         break;
       }
     }
     Position nPos;
+    std::string ncor;
     while(true){
       std::cout << "Type coordinant of where do you want to go: ";
-      std::string ncor;
       std:: cin >> ncor;
+      if(ncor == "sc" && gm.isShortCastling()) break;
+      if(ncor == "lc" && gm.isLongCastling()) break;
       if(isValidCor(ncor)){
         nPos = convertToPosition(ncor);
       }else{
@@ -62,7 +66,9 @@ int main(){
       }else break;
     }
     //std::cout << "Looplar bitti." << std::endl;
-    gm.makeMove(piecePos,nPos);
+    if(ncor == "sc") gm.makeShortCastling();
+    else if(ncor == "lc") gm.makeLongCastling();
+    else gm.makeMove(piecePos,nPos);
     board.printBoard();
     if(gm.isGameOver()){
       std::cout << "Game Over!" << std::endl;

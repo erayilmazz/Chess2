@@ -18,6 +18,8 @@ public:
     void setCooldowns(const std::string& color);
     void movePiece(Position& exPos, Position& newPos);
     void pawnPromotion(ChessPiece& piece);
+    void makeShortCastling(std::string color);
+    void makeLongCastling(std::string color);
     void removePiece(Position& pos);
     int getSize() const;
 

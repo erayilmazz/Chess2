@@ -267,3 +267,43 @@ bool MoveValidator::isPortalThere(Position& pos) const{
     }
     return false;
 }
+
+bool MoveValidator::shortCastling(const std::string color) const{
+    Position king, castle, empty1, empty2;
+    if(color == "white"){
+        king = {5,0};
+        castle = {8,0};
+        empty1 = {6,0};
+        empty2 = {7,0};
+    }else{
+        king = {5,9};
+        castle = {8,9};
+        empty1 = {6,9};
+        empty2 = {7,9};
+    }
+    if(board->getPiece(king) == nullptr || board->getPiece(castle) == nullptr) return false;
+    if(board->getPiece(king)->getMoveBefore() || board->getPiece(castle)->getMoveBefore()) return false;
+    if(board->getPiece(empty1) == nullptr && board->getPiece(empty2) == nullptr) return true;
+    return false;
+}
+
+bool MoveValidator::longCastling(const std::string color) const{
+    Position king, castle, empty1, empty2, empty3;
+    if(color == "white"){
+        king = {5,0};
+        castle = {1,0};
+        empty1 = {2,0};
+        empty2 = {3,0};
+        empty3 = {4,0};
+    }else{
+        king = {5,9};
+        castle = {1,9};
+        empty1 = {2,9};
+        empty2 = {3,9};
+        empty3 = {4,9};
+    }
+    if(board->getPiece(king) == nullptr || board->getPiece(castle) == nullptr) return false;
+    if(board->getPiece(king)->getMoveBefore() || board->getPiece(castle)->getMoveBefore()) return false;
+    if(board->getPiece(empty1) == nullptr && board->getPiece(empty2) == nullptr && board->getPiece(empty3) == nullptr) return true;
+    return false;
+}
